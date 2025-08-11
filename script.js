@@ -1,3 +1,7 @@
+import bearing from '@turf/bearing';
+import distance from '@turf/distance';
+import L from 'leaflet';
+
 // Replace with your data
 const data = [
   {
@@ -45,9 +49,8 @@ function addMarker(data) {
 
   // Draw bearing arrow
   if (prevLatLng) {
-      const line = turf.lineString([prevLatLng, [data.best_lat, data.best_lon]]);
-      const bearing = turf.bearing(line);
-      const angle = bearing * (Math.PI / 180);  // Convert to radians for CSS
+      const bearingAngle = bearing([prevLatLng[1], prevLatLng[0]], [data.best_lon, data.best_lat]);
+      const angle = bearingAngle * (Math.PI / 180);  // Convert to radians for CSS
 
       // Add arrow representing bearing
       const arrowIcon = L.divIcon({

@@ -1,8 +1,19 @@
 {
+  "name": "balloon-visualizer",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "servor --reload"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "servor": "^4.0.2"
+    "@turf/bearing": "^7.2.0",
+    "@turf/distance": "^7.2.0",
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
   }
 }
