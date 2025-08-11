@@ -1,45 +1,29 @@
 import bearing from '@turf/bearing';
 import L from 'leaflet';
+import { events } from './events';
 
 // Define the event data type
 interface EventData {
   event: string;
-  best_location_when: string;
+  file: string;
+  best_location_when: number;
+  "Best location ISO8601": string;
+  "Best location PST": string;
   best_lat: number;
   best_lon: number;
   best_location: string;
-  body_temperature: number;
-  body_bearing: number;
-  body_distance: number;
-  body_velocity: number;
+  best_country: string;
+  best_timezone: string;
+  "body.temperature": number;
+  "Body temperature (F)": number;
+  "body.bearing": number | null;
+  "body.distance": number | null;
+  "body.dop": number | null;
+  "body.velocity": number | null;
 }
 
 // Replace with your data
-const data: EventData[] = [
-  {
-      event: "2341653a-fc07-86ed-8e9f-cd13e692dbed",
-      best_location_when: "2025-08-09T2:37:10 PM PST",
-      best_lat: 46.3847275,
-      best_lon: -123.1622773,
-      best_location: "Vader WA",
-      body_temperature: 38.0,
-      body_bearing: 334.03732,
-      body_distance: 7.0083313,
-      body_velocity: 0.14911343
-  },
-  {
-      event: "486c5ecc-0cfa-8674-bd97-d0b49852d0b1",
-      best_location_when: "2025-08-09T2:36:23 PM PST",
-      best_lat: 46.3846725,
-      best_lon: -123.1622383,
-      best_location: "Vader WA",
-      body_temperature: 38.0,
-      body_bearing: 242.64433,
-      body_distance: 40.73381,
-      body_velocity: 8.146762
-  }
-  // Add more events here
-];
+const data: EventData[] = events;
 
 // Initialize map
 const map: L.Map = L.map('map').setView([data[data.length -1].best_lat, data[data.length -1].best_lon], 13);
@@ -53,9 +37,9 @@ function addMarker(eventData: EventData): void {
   const popupContent = `
       <b>Location:</b> ${eventData.best_location}<br>
       <b>Time:</b> ${eventData.best_location_when}<br>
-      <b>Temperature:</b> ${eventData.body_temperature}°F<br>
-      <b>Distance:</b> ${eventData.body_distance} meters<br>
-      <b>Velocity:</b> ${eventData.body_velocity} m/s<br>
+      <b>Temperature:</b> ${eventData["body.temperature"]}°F<br>
+      <b>Distance:</b> ${eventData["body.distance"]} meters<br>
+      <b>Velocity:</b> ${eventData["body.velocity"]} m/s<br>
   `;
   marker.bindPopup(popupContent);
   markers.push(marker);
@@ -117,9 +101,9 @@ map.on('mouseover', (e: L.LeafletMouseEvent) => {
     infoElement.innerHTML = `
         <b>Location:</b> ${closest.best_location}<br>
         <b>Time:</b> ${closest.best_location_when}<br>
-        <b>Temperature:</b> ${closest.body_temperature}°F<br>
-        <b>Distance:</b> ${closest.body_distance} meters<br>
-        <b>Velocity:</b> ${closest.body_velocity} m/s<br>
+        <b>Temperature:</b> ${closest["body.temperature"]}°F<br>
+        <b>Distance:</b> ${closest["body.distance"]} meters<br>
+        <b>Velocity:</b> ${closest["body.velocity"]} m/s<br>
     `;
   }
 });
