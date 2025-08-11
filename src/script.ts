@@ -25,8 +25,11 @@ interface EventData {
 // Replace with your data
 const data: EventData[] = events;
 
+// Order data by best_location_when
+data.sort((a, b) => a.best_location_when - b.best_location_when);
+
 // Initialize map
-const map: L.Map = L.map('map').setView([data[data.length -1].best_lat, data[data.length -1].best_lon], 13);
+const map: L.Map = L.map('map').setView([data[0].best_lat, data[0].best_lon], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
 let prevLatLng: [number, number] | null = null;
