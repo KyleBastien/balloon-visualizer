@@ -107,3 +107,63 @@ map.on('mouseover', (e: L.LeafletMouseEvent) => {
     `;
   }
 });
+
+// Add resizable functionality
+function initializeResize(): void {
+  const resizeHandle = document.querySelector('.resize-handle') as HTMLElement;
+  const mapElement = document.getElementById('map') as HTMLElement;
+  const timelineElement = document.querySelector('.timeline') as HTMLElement;
+  const container = document.querySelector('.container') as HTMLElement;
+  
+  if (!resizeHandle || !mapElement || !timelineElement || !container) return;
+  
+  let isResizing = false;
+  let startY = 0;
+  let startMapHeight = 0;
+  
+  resizeHandle.addEventListener('mousedown', (e: MouseEvent) => {
+    isResizing = true;
+    startY = e.clientY;
+    startMapHeight = mapElement.offsetHeight;
+    
+    document.body.style.cursor = 'row-resize';
+    document.body.style.userSelect = 'none';
+    
+    e.preventDefault();
+  });
+  
+  document.addEventListener('mousemove', (e: MouseEvent) => {
+    if (!isResizing) return;
+    
+    const deltaY = e.clientY - startY;
+    const containerHeight = container.offsetHeight;
+    const resizeHandleHeight = resizeHandle.offsetHeight;
+    
+    const newMapHeight = Math.max(200, Math.min(
+      containerHeight - 100 - resizeHandleHeight, 
+      startMapHeight + deltaY
+    ));
+    
+    const newTimelineHeight = Math.max(40, 
+      containerHeight - newMapHeight - resizeHandleHeight
+    );
+    
+    mapElement.style.height = `${newMapHeight}px`;
+    mapElement.style.flex = 'none';
+    timelineElement.style.height = `${newTimelineHeight}px`;
+    
+    // Trigger map resize
+    map.invalidateSize();
+  });
+  
+  document.addEventListener('mouseup', () => {
+    if (isResizing) {
+      isResizing = false;
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    }
+  });
+}
+
+// Initialize resize functionality when DOM is loaded
+document.addEventListener('DOMContentLoaded', initializeResize);
