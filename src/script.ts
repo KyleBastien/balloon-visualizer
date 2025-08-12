@@ -39,10 +39,11 @@ function addMarker(eventData: EventData): void {
   const marker = L.marker([eventData.best_lat, eventData.best_lon]).addTo(map);
   const popupContent = `
       <b>Location:</b> ${eventData.best_location}<br>
-      <b>Time:</b> ${eventData.best_location_when}<br>
-      <b>Temperature:</b> ${eventData["body.temperature"]}°F<br>
-      <b>Distance:</b> ${eventData["body.distance"]} meters<br>
+      <b>Time:</b> ${eventData["Best location PST"]}<br>
+      <b>Temperature:</b> ${eventData["Body temperature (F)"]}°F<br>
+      <b>Distance from previous:</b> ${eventData["body.distance"]} meters<br>
       <b>Velocity:</b> ${eventData["body.velocity"]} m/s<br>
+      <b>Bearing:</b> ${eventData["body.bearing"]}°<br>
   `;
   marker.bindPopup(popupContent);
   markers.push(marker);
@@ -72,16 +73,34 @@ function addMarker(eventData: EventData): void {
 data.forEach((event, index) => {
   addMarker(event);
 
-  // Create timeline dots
+  // Create timeline item with dot and label
+  const timelineItem = document.createElement('div');
+  timelineItem.className = 'timeline-item';
+  timelineItem.dataset.index = index.toString();
+  
+  // Create the dot
   const timelineDot = document.createElement('div');
-  timelineDot.dataset.index = index.toString();
+  timelineDot.className = 'timeline-dot';
+  
+  // Create the time label
+  const timelineLabel = document.createElement('div');
+  timelineLabel.className = 'timeline-label';
+  
+  // Format the time from the PST string (remove seconds for brevity)
+  const timeString = event["Best location PST"];
+  timelineLabel.textContent = timeString;
+
+  // Assemble the timeline item
+  timelineItem.appendChild(timelineDot);
+  timelineItem.appendChild(timelineLabel);
+  
   const timelineElement = document.getElementById('timeline');
   if (timelineElement) {
-    timelineElement.appendChild(timelineDot);
+    timelineElement.appendChild(timelineItem);
   }
 
-  // Hover over timeline dot to highlight on map
-  timelineDot.addEventListener('mouseenter', () => {
+  // Hover over timeline item to highlight on map
+  timelineItem.addEventListener('mouseenter', () => {
       map.setView([data[index].best_lat, data[index].best_lon], 13);
       if (markers[index]) {
         markers[index].openPopup();
@@ -90,26 +109,26 @@ data.forEach((event, index) => {
 });
 
 // Display data on hover
-map.on('mouseover', (e: L.LeafletMouseEvent) => {
-  const lat = e.latlng.lat;
-  const lon = e.latlng.lng;
-  const closest = data.reduce((prev, curr) => {
-      const distPrev = Math.sqrt(Math.pow(prev.best_lat - lat, 2) + Math.pow(prev.best_lon - lon, 2));
-      const distCurr = Math.sqrt(Math.pow(curr.best_lat - lat, 2) + Math.pow(curr.best_lon - lon, 2));
-      return distPrev < distCurr ? prev : curr;
-  });
+// map.on('mouseover', (e: L.LeafletMouseEvent) => {
+//   const lat = e.latlng.lat;
+//   const lon = e.latlng.lng;
+//   const closest = data.reduce((prev, curr) => {
+//       const distPrev = Math.sqrt(Math.pow(prev.best_lat - lat, 2) + Math.pow(prev.best_lon - lon, 2));
+//       const distCurr = Math.sqrt(Math.pow(curr.best_lat - lat, 2) + Math.pow(curr.best_lon - lon, 2));
+//       return distPrev < distCurr ? prev : curr;
+//   });
   
-  const infoElement = document.getElementById('info');
-  if (infoElement) {
-    infoElement.innerHTML = `
-        <b>Location:</b> ${closest.best_location}<br>
-        <b>Time:</b> ${closest.best_location_when}<br>
-        <b>Temperature:</b> ${closest["body.temperature"]}°F<br>
-        <b>Distance:</b> ${closest["body.distance"]} meters<br>
-        <b>Velocity:</b> ${closest["body.velocity"]} m/s<br>
-    `;
-  }
-});
+//   const infoElement = document.getElementById('info');
+//   if (infoElement) {
+//     infoElement.innerHTML = `
+//         <b>Location:</b> ${closest.best_location}<br>
+//         <b>Time:</b> ${closest.best_location_when}<br>
+//         <b>Temperature:</b> ${closest["body.temperature"]}°F<br>
+//         <b>Distance:</b> ${closest["body.distance"]} meters<br>
+//         <b>Velocity:</b> ${closest["body.velocity"]} m/s<br>
+//     `;
+//   }
+// });
 
 // Add resizable functionality
 function initializeResize(): void {
