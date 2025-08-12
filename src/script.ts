@@ -37,26 +37,48 @@ const markers: L.Marker[] = [];
 
 function addMarker(eventData: EventData): void {
   const marker = L.marker([eventData.best_lat, eventData.best_lon]).addTo(map);
+  
+  // Create bearing arrow for popup (if bearing data exists)
+  let bearingInfo = '';
+  let mapArrowHtml = '';
+  
+  if (eventData["body.bearing"] !== null && prevLatLng) {
+    const bearingValue = eventData["body.bearing"];
+    const bearingArrowStyle = `transform: rotate(${bearingValue}deg);`;
+    bearingInfo = `${bearingValue.toFixed(1)}° <span class="bearing-arrow" style="${bearingArrowStyle}"></span>`;
+    
+    // Create map arrow using the calculated bearing from Turf
+    const calculatedBearing = bearing([prevLatLng[1], prevLatLng[0]], [eventData.best_lon, eventData.best_lat]);
+    mapArrowHtml = `<div style="transform: rotate(${calculatedBearing}deg);"></div>`;
+  } else if (eventData["body.bearing"] !== null) {
+    const bearingValue = eventData["body.bearing"];
+    const bearingArrowStyle = `transform: rotate(${bearingValue}deg);`;
+    bearingInfo = `${bearingValue.toFixed(1)}° <span class="bearing-arrow" style="${bearingArrowStyle}"></span>`;
+  } else {
+    bearingInfo = 'N/A';
+  }
+
   const popupContent = `
       <b>Location:</b> ${eventData.best_location}<br>
       <b>Time:</b> ${eventData["Best location PST"]}<br>
       <b>Temperature:</b> ${eventData["Body temperature (F)"]}°F<br>
       <b>Distance from previous:</b> ${eventData["body.distance"]} meters<br>
       <b>Velocity:</b> ${eventData["body.velocity"]} m/s<br>
-      <b>Bearing:</b> ${eventData["body.bearing"]}°<br>
+      <b>Bearing:</b> ${bearingInfo}<br>
   `;
   marker.bindPopup(popupContent);
   markers.push(marker);
 
-  // Draw bearing arrow
-  if (prevLatLng) {
-      const bearingAngle = bearing([prevLatLng[1], prevLatLng[0]], [eventData.best_lon, eventData.best_lat]);
-      const angle = bearingAngle * (Math.PI / 180);  // Convert to radians for CSS
-
+  // Draw bearing arrow on map
+  if (prevLatLng && mapArrowHtml) {
+      const calculatedBearing = bearing([prevLatLng[1], prevLatLng[0]], [eventData.best_lon, eventData.best_lat]);
+      
       // Add arrow representing bearing
       const arrowIcon = L.divIcon({
           className: 'arrow-icon',
-          html: `<div style="transform: rotate(${angle}rad); width: 15px; height: 15px; border: 3px solid black; border-top: 0px; border-left: 0px; border-bottom: 0px; border-right: 15px solid transparent;"></div>`
+          html: `<div style="transform: rotate(${calculatedBearing}deg);"></div>`,
+          iconSize: [16, 16],
+          iconAnchor: [8, 8]
       });
       L.marker([eventData.best_lat, eventData.best_lon], {icon: arrowIcon}).addTo(map);
   }
