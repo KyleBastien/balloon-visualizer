@@ -108,28 +108,6 @@ data.forEach((event, index) => {
   });
 });
 
-// Display data on hover
-// map.on('mouseover', (e: L.LeafletMouseEvent) => {
-//   const lat = e.latlng.lat;
-//   const lon = e.latlng.lng;
-//   const closest = data.reduce((prev, curr) => {
-//       const distPrev = Math.sqrt(Math.pow(prev.best_lat - lat, 2) + Math.pow(prev.best_lon - lon, 2));
-//       const distCurr = Math.sqrt(Math.pow(curr.best_lat - lat, 2) + Math.pow(curr.best_lon - lon, 2));
-//       return distPrev < distCurr ? prev : curr;
-//   });
-  
-//   const infoElement = document.getElementById('info');
-//   if (infoElement) {
-//     infoElement.innerHTML = `
-//         <b>Location:</b> ${closest.best_location}<br>
-//         <b>Time:</b> ${closest.best_location_when}<br>
-//         <b>Temperature:</b> ${closest["body.temperature"]}°F<br>
-//         <b>Distance:</b> ${closest["body.distance"]} meters<br>
-//         <b>Velocity:</b> ${closest["body.velocity"]} m/s<br>
-//     `;
-//   }
-// });
-
 // Add resizable functionality
 function initializeResize(): void {
   const resizeHandle = document.querySelector('.resize-handle') as HTMLElement;
