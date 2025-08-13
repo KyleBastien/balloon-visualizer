@@ -25,8 +25,11 @@ export const MapComponent: React.FC<MapComponentProps> = ({ data, selectedEvent,
         
         if (eventData["body.bearing"] !== null && prevLatLng) {
           const bearingValue = eventData["body.bearing"];
-          const bearingArrowStyle = `transform: rotate(${bearingValue}deg);`;
-          bearingInfo = `${bearingValue.toFixed(1)}° <span class="bearing-arrow" style="${bearingArrowStyle}"></span>`;
+          // Create inline SVG arrow for popup - more reliable than CSS
+          const arrowSvg = `<svg width="16" height="16" style="display: inline-block; margin-left: 8px; vertical-align: middle; transform: rotate(${bearingValue}deg);">
+            <polygon points="8,2 12,14 8,12 4,14" fill="#2c5aa0" stroke="#1a3a6b" stroke-width="1"/>
+          </svg>`;
+          bearingInfo = `${bearingValue.toFixed(1)}° ${arrowSvg}`;
           
           // Create map arrow using the calculated bearing from Turf
           const calculatedBearing = bearing([prevLatLng[1], prevLatLng[0]], [eventData.best_lon, eventData.best_lat]);
@@ -41,8 +44,11 @@ export const MapComponent: React.FC<MapComponentProps> = ({ data, selectedEvent,
           L.marker([eventData.best_lat, eventData.best_lon], {icon: arrowIcon}).addTo(mapInstanceRef.current!);
         } else if (eventData["body.bearing"] !== null) {
           const bearingValue = eventData["body.bearing"];
-          const bearingArrowStyle = `transform: rotate(${bearingValue}deg);`;
-          bearingInfo = `${bearingValue.toFixed(1)}° <span class="bearing-arrow" style="${bearingArrowStyle}"></span>`;
+          // Create inline SVG arrow for popup - more reliable than CSS
+          const arrowSvg = `<svg width="16" height="16" style="display: inline-block; margin-left: 8px; vertical-align: middle; transform: rotate(${bearingValue}deg);">
+            <polygon points="8,2 12,14 8,12 4,14" fill="#2c5aa0" stroke="#1a3a6b" stroke-width="1"/>
+          </svg>`;
+          bearingInfo = `${bearingValue.toFixed(1)}° ${arrowSvg}`;
         } else {
           bearingInfo = 'N/A';
         }
@@ -54,6 +60,8 @@ export const MapComponent: React.FC<MapComponentProps> = ({ data, selectedEvent,
           <b>Distance from previous:</b> ${eventData["body.distance"]} meters<br>
           <b>Velocity:</b> ${eventData["body.velocity"]} m/s<br>
           <b>Bearing:</b> ${bearingInfo}<br>
+          <b>Latitude:</b> ${eventData.best_lat}<br>
+          <b>Longitude:</b> ${eventData.best_lon}
         `;
         marker.bindPopup(popupContent);
 
