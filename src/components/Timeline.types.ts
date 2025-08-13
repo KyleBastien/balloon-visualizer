@@ -1,0 +1,8 @@
+import { EventData } from "../types/EventData";
+
+export interface TimelineProps {
+  data: EventData[];
+  selectedEvent: EventData | null;
+  onEventSelect: (event: EventData) => void;
+  height: number;
+}

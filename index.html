@@ -4,15 +4,10 @@
     <title>Interactive Map Viewer</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="src/styles.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   </head>
   <body>
-    <div class="container">
-      <div id="map"></div>
-      <div class="resize-handle"></div>
-      <div class="timeline" id="timeline"></div>
-    </div>
-    <script type="module" src="src/script.ts"></script>
+    <div id="root"></div>
+    <script type="module" src="src/main.tsx"></script>
   </body>
 </html>
