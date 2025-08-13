@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require('fs');
 const path = require('path');
 
@@ -9,19 +11,19 @@ const csvData = fs.readFileSync(csvFilePath, 'utf8');
 
 // Convert CSV to an array of objects
 function parseCSV(csv) {
-    const rows = csv.trim().split('\n');
-    const headers = rows.shift().split(',');
+  const rows = csv.trim().split('\n');
+  const headers = rows.shift().split(',');
 
-    return rows.map(row => {
-        const values = row.split(',');
-        const obj = {};
+  return rows.map(row => {
+    const values = row.split(',');
+    const obj = {};
 
-        headers.forEach((header, index) => {
-            obj[header.trim()] = isNaN(values[index]) ? values[index].trim() : parseFloat(values[index]);
-        });
-
-        return obj;
+    headers.forEach((header, index) => {
+      obj[header.trim()] = isNaN(values[index]) ? values[index].trim() : parseFloat(values[index]);
     });
+
+    return obj;
+  });
 }
 
 // Convert CSV data to JavaScript array of objects
