@@ -14,7 +14,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
   const markersRef = useRef<L.Marker[]>([]);
 
   useEffect(() => {
-    if (mapRef.current && !mapInstanceRef.current) {
+    if (mapRef.current && !mapInstanceRef.current && data.length > 0) {
       // Initialize map
       mapInstanceRef.current = L.map(mapRef.current).setView(
         [data[0].best_lat, data[0].best_lon],
