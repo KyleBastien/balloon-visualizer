@@ -1,15 +1,13 @@
-import React, { useCallback, useMemo, useState, useEffect } from "react";
-import { MapComponent } from "./components/MapComponent";
-import { Timeline } from "./components/Timeline";
-import { ResizeHandle } from "./components/ResizeHandle";
-import { EventData } from "./types/EventData";
-import { events } from "./events";
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { MapComponent } from './components/MapComponent';
+import { ResizeHandle } from './components/ResizeHandle';
+import { Timeline } from './components/Timeline';
+import { events } from './events';
+import { EventData } from './types/EventData';
 
 export const App: React.FC = () => {
   const data = useMemo(() => {
-    return [...events].sort(
-      (a, b) => a.best_location_when - b.best_location_when
-    );
+    return [...events].sort((a, b) => a.best_location_when - b.best_location_when);
   }, []);
 
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
@@ -24,7 +22,7 @@ export const App: React.FC = () => {
 
   const mapHeight = useMemo(() => {
     // Use manual height if set, otherwise calculate to fill available space
-    return manualMapHeight ?? (windowHeight - timelineHeight - resizeHandleHeight);
+    return manualMapHeight ?? windowHeight - timelineHeight - resizeHandleHeight;
   }, [windowHeight, timelineHeight, manualMapHeight]);
 
   const maxMapHeight = useMemo(() => {
@@ -36,7 +34,7 @@ export const App: React.FC = () => {
     const handleResize = () => {
       const newWindowHeight = window.innerHeight;
       setWindowHeight(newWindowHeight);
-      
+
       // Adjust map height if it's too large for the new window size
       const newMaxMapHeight = newWindowHeight - timelineHeight - resizeHandleHeight;
       if (manualMapHeight && manualMapHeight > newMaxMapHeight) {
@@ -57,7 +55,7 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className='container'>
       <MapComponent
         data={data}
         selectedEvent={selectedEvent}

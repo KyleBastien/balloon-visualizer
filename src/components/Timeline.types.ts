@@ -1,4 +1,4 @@
-import { EventData } from "../types/EventData";
+import { EventData } from '../types/EventData';
 
 export interface TimelineProps {
   data: EventData[];
