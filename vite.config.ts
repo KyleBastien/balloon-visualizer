@@ -24,7 +24,17 @@ export default defineConfig({
         branches: 80,
         statements: 80,
       },
-      exclude: ['node_modules/', 'src/test/', '**/*.d.ts', '**/*.config.*', 'dist/'],
+      exclude: [
+        'node_modules/',
+        'src/test/',
+        'src/main.tsx',
+        'src/types/',
+        'tools/',
+        '**/*.d.ts',
+        '**/*.types.ts',
+        '**/*.config.*',
+        'dist/',
+      ],
     },
   },
 });
