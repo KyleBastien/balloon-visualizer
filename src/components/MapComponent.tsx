@@ -104,11 +104,36 @@ export const MapComponent: React.FC<MapComponentProps> = ({ data, selectedEvent,
   // Handle selected event
   useEffect(() => {
     if (selectedEvent && mapInstanceRef.current) {
-      mapInstanceRef.current.setView([selectedEvent.best_lat, selectedEvent.best_lon], 13);
-      const markerIndex = data.findIndex(d => d.event === selectedEvent.event);
-      if (markersRef.current[markerIndex]) {
-        markersRef.current[markerIndex].openPopup();
-      }
+      const targetCoords = [selectedEvent.best_lat, selectedEvent.best_lon] as [number, number];
+      
+      // Force center the map on the selected event with animation
+      mapInstanceRef.current.setView(
+        targetCoords, 
+        Math.max(13, mapInstanceRef.current.getZoom()), // Use current zoom if higher than 13
+        {
+          animate: true,
+          duration: 0.2, // Smooth animation
+          easeLinearity: 0.1
+        }
+      );
+      
+      // Additional panTo call to ensure perfect centering
+      setTimeout(() => {
+        if (mapInstanceRef.current) {
+          mapInstanceRef.current.panTo(targetCoords, {
+            animate: true,
+            duration: 0.2
+          });
+        }
+      }, 10);
+      
+      // Open popup after centering is complete
+      setTimeout(() => {
+        const markerIndex = data.findIndex(d => d.event === selectedEvent.event);
+        if (markersRef.current[markerIndex]) {
+          markersRef.current[markerIndex].openPopup();
+        }
+      }, 100);
     }
   }, [selectedEvent, data]);
 
