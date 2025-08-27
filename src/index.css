@@ -1,0 +1,39 @@
+@import 'tailwindcss';
+
+/* Override Tailwind base styles for the body */
+@layer base {
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
+}
+
+/* Arrow styling for bearing visualization */
+.bearing-arrow {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 12px solid #2c5aa0;
+  margin-left: 8px;
+  vertical-align: middle;
+  transform-origin: center bottom;
+}
+
+/* Custom arrow styling for Leaflet markers - keeping as CSS for now */
+.arrow-icon {
+  z-index: 1000;
+}
+
+.arrow-icon div {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 16px solid #ff4444;
+  transform-origin: center bottom;
+}

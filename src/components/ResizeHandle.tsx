@@ -44,8 +44,12 @@ export const ResizeHandle: React.FC<ResizeHandleProps> = ({
 
   return (
     <div
-      className={`resize-handle ${isResizing ? 'resizing' : ''}`}
+      className={`relative h-2.5 cursor-row-resize border-t border-b border-gray-400 ${
+        isResizing ? 'bg-gray-400' : 'bg-gray-300 hover:bg-gray-400'
+      }`}
       onMouseDown={handleMouseDown}
-    />
+    >
+      <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs tracking-wider text-gray-500' />
+    </div>
   );
 };

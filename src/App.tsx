@@ -15,18 +15,21 @@ export const App: React.FC = () => {
   const [manualMapHeight, setManualMapHeight] = useState<number | null>(null);
 
   const timelineHeight = useMemo(() => {
-    return 45; // Fixed height for timeline
+    return 45; // Fixed height for timeline - now strictly enforced
   }, []);
 
-  const resizeHandleHeight = 10; // Height of resize handle
+  const resizeHandleHeight = 10; // Height of resize handle (h-2.5 = 10px)
 
   const mapHeight = useMemo(() => {
     // Use manual height if set, otherwise calculate to fill available space
-    return manualMapHeight ?? windowHeight - timelineHeight - resizeHandleHeight;
+    const calculatedHeight = manualMapHeight ?? windowHeight - timelineHeight - resizeHandleHeight;
+    // Ensure we never go below minimum
+    return Math.max(200, calculatedHeight);
   }, [windowHeight, timelineHeight, manualMapHeight]);
 
   const maxMapHeight = useMemo(() => {
-    return windowHeight - timelineHeight - resizeHandleHeight - 20; // Leave small buffer for minimum timeline
+    // Ensure timeline always has its required space
+    return Math.max(200, windowHeight - timelineHeight - resizeHandleHeight);
   }, [windowHeight, timelineHeight]);
 
   // Handle window resize
@@ -35,8 +38,8 @@ export const App: React.FC = () => {
       const newWindowHeight = window.innerHeight;
       setWindowHeight(newWindowHeight);
 
-      // Adjust map height if it's too large for the new window size
-      const newMaxMapHeight = newWindowHeight - timelineHeight - resizeHandleHeight;
+      // Adjust manual map height if it exceeds the new maximum
+      const newMaxMapHeight = Math.max(200, newWindowHeight - timelineHeight - resizeHandleHeight);
       if (manualMapHeight && manualMapHeight > newMaxMapHeight) {
         setManualMapHeight(newMaxMapHeight);
       }
@@ -55,7 +58,7 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <div className='container'>
+    <div className='flex h-screen flex-col overflow-hidden'>
       <MapComponent
         data={data}
         selectedEvent={selectedEvent}

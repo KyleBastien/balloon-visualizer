@@ -17,7 +17,9 @@ describe('ResizeHandle', () => {
   it('has correct CSS class', () => {
     const { container } = render(<ResizeHandle {...mockProps} />);
     const handle = container.firstChild as HTMLElement;
-    expect(handle).toHaveClass('resize-handle');
+    expect(handle).toHaveClass('h-2.5');
+    expect(handle).toHaveClass('cursor-row-resize');
+    expect(handle).toHaveClass('bg-gray-300');
   });
 
   it('calls onResize when mouse down and move events occur', () => {

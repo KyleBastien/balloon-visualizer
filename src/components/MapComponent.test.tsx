@@ -24,7 +24,7 @@ describe('MapComponent', () => {
   it('renders with minimum height', () => {
     const { container } = render(<MapComponent {...mockProps} height={100} />);
     const mapDiv = container.firstChild as HTMLElement;
-    expect(mapDiv).toHaveStyle({ minHeight: '200px' });
+    expect(mapDiv).toHaveClass('min-h-[200px]');
   });
 
   it('calls onEventSelect when provided', () => {

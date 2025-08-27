@@ -174,5 +174,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
     }
   }, [selectedEvent, data]);
 
-  return <div ref={mapRef} style={{ height: `${height}px`, minHeight: '200px' }} />;
+  return (
+    <div ref={mapRef} className='min-h-[200px] flex-shrink-0' style={{ height: `${height}px` }} />
+  );
 };

@@ -12,13 +12,13 @@ const mockProps = {
 describe('Timeline', () => {
   it('renders without crashing', () => {
     render(<Timeline {...mockProps} />);
-    const timeline = document.querySelector('.timeline');
+    const timeline = document.querySelector('.bg-gray-100');
     expect(timeline).toBeInTheDocument();
   });
 
   it('renders all timeline items', () => {
     render(<Timeline {...mockProps} />);
-    const timelineItems = document.querySelectorAll('.timeline-item');
+    const timelineItems = document.querySelectorAll('.bg-blue-300.min-w-\\[90px\\]');
     expect(timelineItems).toHaveLength(mockEventData.length);
   });
 
@@ -26,7 +26,7 @@ describe('Timeline', () => {
     const onEventSelect = vi.fn();
     render(<Timeline {...mockProps} onEventSelect={onEventSelect} />);
 
-    const firstItem = document.querySelector('.timeline-item');
+    const firstItem = document.querySelector('.bg-blue-300.min-w-\\[90px\\]');
     if (firstItem) {
       fireEvent.click(firstItem);
     }
@@ -38,7 +38,7 @@ describe('Timeline', () => {
     const onEventSelect = vi.fn();
     render(<Timeline {...mockProps} onEventSelect={onEventSelect} />);
 
-    const firstItem = document.querySelector('.timeline-item');
+    const firstItem = document.querySelector('.bg-blue-300.min-w-\\[90px\\]');
     if (firstItem) {
       fireEvent.mouseEnter(firstItem);
     }
@@ -53,7 +53,7 @@ describe('Timeline', () => {
     };
     render(<Timeline {...propsWithSelected} />);
 
-    const timelineItems = document.querySelectorAll('.timeline-item');
+    const timelineItems = document.querySelectorAll('.bg-blue-300.min-w-\\[90px\\]');
     // Second item should have selected class
     expect(timelineItems[1]).toHaveClass('selected');
   });
