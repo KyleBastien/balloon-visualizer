@@ -81,7 +81,13 @@ export const MapComponent: React.FC<MapComponentProps> = ({
               <b>Velocity:</b> ${eventData['body.velocity']} m/s<br>
               <b>Bearing:</b> ${bearingInfo}<br>
               <b>Latitude:</b> ${eventData.best_lat}<br>
-              <b>Longitude:</b> ${eventData.best_lon}
+              <b>Longitude:</b> ${eventData.best_lon}<br>
+              <b>Altitude (Barometric):</b> ${eventData['Baro Alt (m)']} m<br>
+              <b>Altitude (GPS):</b> ${eventData['GPS Alt (m)']} m<br>
+              <b>Humidity:</b> ${eventData['Humidity (%)']}%<br>
+              <b>Pressure:</b> ${eventData['Pressure (hPa)']} hPa<br>
+              <b>Ascent Rate:</b> ${eventData['Ascent Rate (m/s)']} m/s<br>
+              <b>Speed:</b> ${eventData['Speed (m/s)']} m/s<br>
             `;
             marker.bindPopup(popupContent);
 

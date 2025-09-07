@@ -15,4 +15,21 @@ export interface EventData {
   'body.distance': number | null;
   'body.dop': number | null;
   'body.velocity': number | null;
+  // Sava1 logger data
+  'Temperature (C)': number;
+  'Humidity (%)': number;
+  'Pressure (hPa)': number;
+  'Baro Alt (m)': number;
+  'GPS Alt (m)': number;
+  'Ascent Rate (m/s)': number;
+  'Max Ascent (m/s)': number;
+  'Speed (m/s)': number;
+  'Max Speed (m/s)': number;
+  'Max Alt (m)': number;
+  'Burst Detected': 'YES' | 'NO';
+  Falling: 'YES' | 'NO';
+  'Temp at Burst': number;
+  TimeSrc: 'GPS';
+  Fix: 'FIX_OK';
+  Sats: number;
 }
