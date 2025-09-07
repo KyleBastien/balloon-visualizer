@@ -229,7 +229,7 @@ invalid-timestamp,25.5`;
       const matcher = new TimestampMatcher();
 
       await expect(matcher.execute(mockEventsFile, mockCsvFile)).rejects.toThrow(
-        /Failed to write events file|EPERM.*operation not permitted/
+        /Failed to write events file|EPERM.*operation not permitted|EACCES.*permission denied/
       );
 
       // Verify backup file was created
